@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>عدّاد الركعات</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="الركعات">
+<meta name="theme-color" content="#0b1610">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800&display=swap">
+<style>
+/* Layout: one dim screen at a time — home list, then a single giant numeral during prayer. Dark only, so the screen never lights the face. */
+:root {
+  --bg: #0b1610;
+  --panel: #13241a;
+  --line: #24402e;
+  --fg: #e6efe8;
+  --muted: #8fa597;
+  --accent: #81c784;
+  --accent-deep: #2e7d32;
+  --warn: #e8c46a;
+  --font: "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font);
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-user-select: none; user-select: none;
+  overscroll-behavior: none;
+}
+[hidden] { display: none !important; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- home ---------- */
+#home { max-width: 520px; margin: 0 auto; padding-block: 20px 32px; display: flex; flex-direction: column; gap: 14px; }
+header { display: flex; align-items: center; justify-content: space-between; }
+h1 { font-size: 1.6rem; font-weight: 800; margin: 0; }
+.link { background: none; border: 0; color: var(--accent); font-size: .95rem; padding: 6px 0; }
+.note {
+  background: #2a2410; border: 1px solid #5a4a1a; color: var(--warn);
+  border-radius: 12px; padding: 12px 14px; font-size: .95rem; line-height: 1.7;
+}
+.prayer {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 16px 20px; border-radius: 14px;
+  background: var(--panel); border: 1px solid var(--line); text-align: right;
+}
+.prayer:active { background: var(--line); }
+.prayer b { font-size: 1.5rem; font-weight: 800; }
+.prayer span { color: var(--muted); font-size: 1rem; font-variant-numeric: tabular-nums; }
+.custom { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; border: 1px dashed var(--line); }
+.custom .label { flex: 1; font-weight: 600; }
+.step { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); font-size: 1.4rem; line-height: 1; }
+.custom output { min-width: 2ch; text-align: center; font-size: 1.5rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.go { padding: 10px 16px; border-radius: 10px; border: 0; background: var(--accent-deep); font-weight: 600; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.row .label { color: var(--muted); font-size: .95rem; margin-inline-end: auto; }
+.seg { display: flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.seg button { background: none; border: 0; padding: 8px 14px; font-size: .9rem; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--accent-deep); color: var(--fg); }
+
+/* ---------- help ---------- */
+#help { max-width: 560px; margin: 0 auto; padding-block: 20px 40px; line-height: 1.9; }
+#help h2 { font-size: 1.2rem; margin: 22px 0 6px; color: var(--accent); }
+#help ol, #help ul { padding-inline-start: 1.3em; margin: 0; }
+#help li { margin-bottom: 4px; }
+
+/* ---------- prayer ---------- */
+#pray { height: 100%; display: flex; flex-direction: column; }
+#pray .top { text-align: center; padding-top: 12px; color: var(--muted); font-size: 1.1rem; }
+#pray .center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+#num { font-size: min(52vw, 46vh); font-weight: 800; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; transition: transform .25s ease; }
+#num.bump { transform: scale(1.06); }
+#of { font-size: 1.4rem; color: var(--muted); }
+.dots { display: flex; gap: 16px; margin-top: 8px; }
+.dots i { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--accent-deep); }
+.dots i.on { background: var(--accent-deep); }
+#hint { min-height: 1.8em; color: var(--warn); font-size: 1.2rem; }
+#done { text-align: center; }
+#done .check { width: 120px; height: 120px; margin: 0 auto 12px; border-radius: 50%; border: 4px solid var(--accent); display: grid; place-items: center; font-size: 64px; color: var(--accent); }
+#done p { margin: 4px 0; font-size: 1.4rem; }
+#done small { color: var(--muted); font-size: 1.1rem; }
+.meter { height: 6px; background: var(--panel); border-radius: 3px; overflow: hidden; width: min(260px, 70vw); position: relative; }
+.meter b { position: absolute; inset: 0 auto 0 0; background: var(--muted); width: 0; transition: width .12s linear; }
+.meter b.near { background: var(--accent); }
+.meter s { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--warn); text-decoration: none; }
+#camErr { text-align: center; color: var(--warn); line-height: 1.8; max-width: 420px; }
+.bar { display: flex; align-items: center; gap: 8px; padding-block: 12px 16px; }
+.bar .step { opacity: .55; }
+.end { margin-inline-start: auto; padding: 12px 20px; border-radius: 12px; border: 0; background: var(--accent-deep); font-weight: 600; font-size: 1.05rem; }
+video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: none; top: 0; left: 0; }
+@media (prefers-reduced-motion: reduce) { #num { transition: none; } .meter b { transition: none; } }
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<main id="home">
+  <header>
+    <h1>عدّاد الركعات</h1>
+    <button class="link" id="openHelp">طريقة الاستخدام</button>
+  </header>
+
+  <div class="note">قبل ما تبدأ: شغّل <b>عدم الإزعاج</b> من مركز التحكم 🌙 عشان الموبايل ما يرنّش.</div>
+
+  <div id="list" style="display:flex;flex-direction:column;gap:12px"></div>
+
+  <div class="custom">
+    <span class="label">صلاة أخرى</span>
+    <button class="step" id="cMinus" aria-label="أقل">−</button>
+    <output id="cVal">2</output>
+    <button class="step" id="cPlus" aria-label="أكتر">+</button>
+    <button class="go" id="cGo">ابدأ</button>
+  </div>
+
+  <div class="row">
+    <span class="label">حساسية الكاميرا</span>
+    <div class="seg" id="sens">
+      <button data-v="low">قليلة</button>
+      <button data-v="mid">عادية</button>
+      <button data-v="high">عالية</button>
+    </div>
+  </div>
+</main>
+
+<!-- ============ HELP ============ -->
+<section id="help" hidden>
+  <button class="link" id="closeHelp">→ رجوع</button>
+
+  <h2>مكان الموبايل</h2>
+  <ul>
+    <li>حط الموبايل على الأرض قدام مكان جبهتك مباشرة، والشاشة لفوق.</li>
+    <li>خلي الكاميرا الأمامية ناحيتك، تحت وشّك وانت ساجد.</li>
+    <li>لما تسجد، وشّك بيغطي الكاميرا والصورة بتضلم، فالتطبيق بيحسبها سجدة. كل سجدتين بيبقوا ركعة.</li>
+    <li>قبل أول صلاة جرّب سجدة واحدة، واتأكد إن الشريط الصغير اتلوّن أخضر والدايرة اتملت.</li>
+    <li>لو العدّاد مش بيحس بيك، ارفع الحساسية. ولو بيعدّ لوحده، قلّلها.</li>
+    <li>لو حصل غلط في العدّ، صلّحه بزرار + و − تحت.</li>
+  </ul>
+
+  <h2>كتم الموبايل</h2>
+  <p>صفحات الويب مش بتقدر تكتم الموبايل بنفسها. قبل الصلاة اسحب مركز التحكم وشغّل <b>عدم الإزعاج</b>، وبعد ما تخلص اقفله.</p>
+
+  <h2>تحطه على الشاشة الرئيسية</h2>
+  <ol>
+    <li>افتح اللينك من <b>Safari</b>.</li>
+    <li>اضغط زرار المشاركة (المربع اللي فيه سهم لفوق).</li>
+    <li>اختار <b>إضافة إلى الشاشة الرئيسية</b>.</li>
+  </ol>
+  <p>على أندرويد: افتحه من Chrome، واختار من القايمة ⋮ <b>إضافة إلى الشاشة الرئيسية</b>.</p>
+
+  <h2>الخصوصية</h2>
+  <p>الكاميرا بتقيس درجة الإضاءة بس. مفيش أي صورة بتتحفظ، ومفيش حاجة بتتبعت لأي مكان.</p>
+</section>
+
+<!-- ============ PRAYER ============ -->
+<section id="pray" hidden>
+  <div class="top" id="pName"></div>
+  <div class="center">
+    <div id="counting">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div id="num">1</div>
+        <div id="of"></div>
+        <div class="dots"><i id="d1"></i><i id="d2"></i></div>
+        <div id="hint"></div>
+        <div class="meter" aria-hidden="true"><b id="mBar"></b><s id="mTh"></s></div>
+      </div>
+    </div>
+    <div id="done" hidden>
+      <div class="check">✓</div>
+      <p id="doneTxt"></p>
+      <small>تقبّل الله</small>
+    </div>
+    <div id="camErr" hidden></div>
+  </div>
+  <div class="bar">
+    <button class="step" id="minus" aria-label="شيل سجدة">−</button>
+    <button class="step" id="plus" aria-label="زوّد سجدة">+</button>
+    <button class="end" id="end">إنهاء الصلاة</button>
+  </div>
+</section>
+
+<video id="cam" playsinline muted autoplay></video>
+<canvas id="cv" width="32" height="24" hidden></canvas>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const PRAYERS = [["الفجر",2],["الظهر",4],["العصر",4],["المغرب",3],["العشاء",4]];
+  // how dark (relative to the room's normal light) counts as "head over the phone"
+  const SENS = { low: 0.30, mid: 0.45, high: 0.60 };
+  const HOLD_MS = 600;      // must stay dark this long to count (a passing hand won't)
+  const COOLDOWN_MS = 1200; // minimum gap between two counted sajdas
+
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch {} }
+  };
+
+  let sens = store.get("sens", "mid");
+  if (!SENS[sens]) sens = "mid";
+
+  // ---------- home ----------
+  const list = $("list");
+  PRAYERS.forEach(([name, n]) => {
+    const b = document.createElement("button");
+    b.className = "prayer";
+    b.innerHTML = `<b>${name}</b><span>${n} ركعات</span>`;
+    b.onclick = () => startPrayer(name, n);
+    list.appendChild(b);
+  });
+  let custom = 2;
+  const showCustom = () => { $("cVal").textContent = custom; };
+  $("cMinus").onclick = () => { custom = Math.max(1, custom - 1); showCustom(); };
+  $("cPlus").onclick = () => { custom = Math.min(20, custom + 1); showCustom(); };
+  $("cGo").onclick = () => startPrayer(`صلاة (${custom} ركعات)`, custom);
+
+  const sensBtns = [...document.querySelectorAll("#sens button")];
+  const showSens = () => sensBtns.forEach(b => b.setAttribute("aria-pressed", b.dataset.v === sens));
+  sensBtns.forEach(b => b.onclick = () => { sens = b.dataset.v; store.set("sens", sens); showSens(); });
+  showSens();
+
+  $("openHelp").onclick = () => { $("home").hidden = true; $("help").hidden = false; scrollTo(0, 0); };
+  $("closeHelp").onclick = () => { $("help").hidden = true; $("home").hidden = false; };
+
+  // ---------- prayer state ----------
+  let target = 4, sujood = 0;
+  const completed = () => Math.floor(sujood / 2);
+  const finished = () => completed() >= target;
+
+  function render() {
+    const c = completed();
+    const cur = Math.min(c + 1, target);
+    const num = $("num");
+    if (num.textContent !== String(cur)) {
+      num.textContent = cur;
+      num.classList.add("bump"); setTimeout(() => num.classList.remove("bump"), 250);
+    }
+    $("of").textContent = `من ${target}`;
+    $("d1").classList.toggle("on", sujood % 2 === 1);
+    $("d2").classList.remove("on");
+    let hint = "";
+    if (sujood % 2 === 1) hint = "بين السجدتين";
+    else if (c === 2 && target > 2) hint = "التشهد الأوسط ثم قُم";
+    else if (c > 0 && c === target - 1) hint = "الركعة الأخيرة";
+    $("hint").textContent = hint;
+    const f = finished();
+    $("counting").hidden = f;
+    $("done").hidden = !f;
+    if (f) $("doneTxt").textContent = `تمّت الصلاة — ${target} ركعات`;
+    $("plus").disabled = f;
+    $("minus").disabled = sujood === 0;
+  }
+
+  function addSajda(d) {
+    sujood = Math.max(0, Math.min(target * 2, sujood + d));
+    render();
+  }
+  $("plus").onclick = () => addSajda(1);
+  $("minus").onclick = () => addSajda(-1);
+
+  // ---------- wake lock ----------
+  let wake = null;
+  async function keepAwake() {
+    try { if ("wakeLock" in navigator) wake = await navigator.wakeLock.request("screen"); } catch {}
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && !$("pray").hidden) keepAwake();
+  });
+
+  // ---------- camera darkness detector ----------
+  const video = $("cam"), cv = $("cv"), ctx = cv.getContext("2d", { willReadFrequently: true });
+  let stream = null, timer = null;
+  let baseline = null, near = false, nearSince = 0, counted = false, lastCount = 0, warm = 0;
+
+  function luminance() {
+    ctx.drawImage(video, 0, 0, cv.width, cv.height);
+    const px = ctx.getImageData(0, 0, cv.width, cv.height).data;
+    let s = 0;
+    for (let i = 0; i < px.length; i += 4) s += px[i] * 0.299 + px[i+1] * 0.587 + px[i+2] * 0.114;
+    return s / (px.length / 4);
+  }
+
+  function tick() {
+    if (!video.videoWidth) return;
+    const lum = luminance();
+    const now = performance.now();
+    if (baseline === null) baseline = lum;
+    if (warm < 8) { baseline = Math.max(baseline, lum); warm++; return; } // let the camera settle
+
+    const k = SENS[sens];
+    const base = Math.max(baseline, 18);
+    const enterTh = base * k, exitTh = base * Math.min(k + 0.15, 0.9);
+
+    if (!near && lum < enterTh) { near = true; nearSince = now; counted = false; }
+    else if (near && lum > exitTh) { near = false; }
+
+    if (near && !counted && now - nearSince >= HOLD_MS && now - lastCount >= COOLDOWN_MS && !finished()) {
+      counted = true; lastCount = now; addSajda(1);
+    }
+    // learn the room's normal light only while nobody is over the phone
+    if (!near) baseline = baseline * 0.97 + Math.max(lum, baseline * 0.6) * 0.03;
+
+    const pct = v => Math.max(0, Math.min(100, v / (base * 1.2) * 100));
+    const bar = $("mBar");
+    bar.style.width = pct(lum) + "%";
+    bar.classList.toggle("near", near);
+    $("mTh").style.left = pct(enterTh) + "%";
+  }
+
+  async function startCamera() {
+    $("camErr").hidden = true;
+    if (!navigator.mediaDevices?.getUserMedia) {
+      showCamErr("المتصفح ده مش بيدعم الكاميرا. افتح اللينك من Safari على الآيفون أو Chrome على أندرويد.");
+      return;
+    }
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user", width: { ideal: 160 }, height: { ideal: 120 }, frameRate: { ideal: 15 } },
+        audio: false
+      });
+      video.srcObject = stream;
+      await video.play().catch(() => {});
+      baseline = null; near = false; warm = 0; lastCount = 0;
+      timer = setInterval(tick, 120);
+    } catch (e) {
+      showCamErr("محتاج إذن الكاميرا عشان يعدّ السجدات تلقائياً. اسمح بالكاميرا وارجع ابدأ تاني، أو عدّ يدوي بزرار +.");
+    }
+  }
+  function showCamErr(msg) { const el = $("camErr"); el.textContent = msg; el.hidden = false; }
+  function stopCamera() {
+    clearInterval(timer); timer = null;
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    stream = null; video.srcObject = null;
+  }
+
+  // ---------- flow ----------
+  function startPrayer(name, n) {
+    target = n; sujood = 0;
+    $("pName").textContent = name;
+    $("home").hidden = true; $("pray").hidden = false;
+    render();
+    keepAwake();
+    startCamera(); // called from the tap, so iOS allows the camera prompt
+  }
+  $("end").onclick = () => {
+    stopCamera();
+    try { wake?.release(); } catch {}
+    wake = null;
+    $("pray").hidden = true; $("home").hidden = false;
+  };
+})();
+</script>
+</body>
+</html>

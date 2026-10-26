@@ -70,6 +70,16 @@ h1 { font-size: 1.6rem; font-weight: 800; margin: 0; }
 .seg button { background: none; border: 0; padding: 8px 14px; font-size: .9rem; color: var(--muted); }
 .seg button[aria-pressed="true"] { background: var(--accent-deep); color: var(--fg); }
 
+.test { border-color: var(--accent-deep); }
+.test b { font-size: 1.2rem; color: var(--accent); }
+.place { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.place svg { width: 100%; height: auto; max-width: 420px; margin: 0 auto; display: block; }
+.place figcaption { font-size: .95rem; line-height: 1.8; color: var(--muted); }
+.place figcaption b { color: var(--fg); }
+label.row { flex-wrap: nowrap; }
+label.row .label { flex: 1; min-width: 0; }
+label.row input { flex: none; width: 22px; height: 22px; accent-color: var(--accent-deep); }
+
 /* ---------- help ---------- */
 #help { max-width: 560px; margin: 0 auto; padding-block: 20px 40px; line-height: 1.9; }
 #help h2 { font-size: 1.2rem; margin: 22px 0 6px; color: var(--accent); }
@@ -77,7 +87,11 @@ h1 { font-size: 1.6rem; font-weight: 800; margin: 0; }
 #help li { margin-bottom: 4px; }
 
 /* ---------- prayer ---------- */
-#pray { height: 100%; display: flex; flex-direction: column; }
+#pray { height: 100%; display: flex; flex-direction: column; transition: background-color .3s; }
+#pray.flipped .top, #pray.flipped .center { transform: rotate(180deg); }
+#pray.flipped .center { flex-direction: column-reverse; }
+#pray.flash { background: #1d3a26; }
+body:has(#pray:not([hidden])) { background: #000; }
 #pray .top { text-align: center; padding-top: 12px; color: var(--muted); font-size: 1.1rem; }
 #pray .center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
 #num { font-size: min(52vw, 46vh); font-weight: 800; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; transition: transform .25s ease; }
@@ -114,6 +128,32 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
 
   <div class="note">قبل ما تبدأ: شغّل <b>عدم الإزعاج</b> من مركز التحكم 🌙 عشان الموبايل ما يرنّش.</div>
 
+  <figure class="place">
+    <svg direction="ltr" viewBox="0 0 320 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="رسمة من فوق: الموبايل على السجادة قدام مكان الجبهة والكاميرا ناحية المصلي" font-family="Noto Kufi Arabic, Geeza Pro, sans-serif">
+  <rect x="95" y="8" width="130" height="236" rx="10" fill="#1a3324" stroke="#2f5a3d" stroke-width="2"/>
+  <rect x="103" y="16" width="114" height="220" rx="6" fill="none" stroke="#2f5a3d" stroke-dasharray="4 4"/>
+  <path d="M268 60 V18 M260 28 L268 16 L276 28" stroke="#e8c46a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="268" y="80" fill="#e8c46a" font-size="14" text-anchor="middle">القبلة</text>
+  <rect x="133" y="28" width="54" height="96" rx="9" fill="#05090a" stroke="#81c784" stroke-width="2.5"/>
+  <text x="160" y="86" fill="#81c784" font-size="34" font-weight="800" text-anchor="middle">1</text>
+  <circle cx="160" cy="115" r="4.5" fill="#e8c46a"/>
+  <path d="M166 115 H232" stroke="#e8c46a" stroke-width="1.5"/>
+  <text x="236" y="120" fill="#e6efe8" font-size="13">الكاميرا هنا</text>
+  <ellipse cx="160" cy="142" rx="26" ry="10" fill="none" stroke="#e6efe8" stroke-width="2" stroke-dasharray="3 3"/>
+  <path d="M134 142 H76" stroke="#e6efe8" stroke-width="1.5"/>
+  <text x="72" y="147" fill="#e6efe8" font-size="13" text-anchor="end">مكان الجبهة</text>
+  <ellipse cx="138" cy="214" rx="13" ry="9" fill="none" stroke="#8fa597" stroke-width="2"/>
+  <ellipse cx="182" cy="214" rx="13" ry="9" fill="none" stroke="#8fa597" stroke-width="2"/>
+  <path d="M125 214 H76" stroke="#8fa597" stroke-width="1.5"/>
+  <text x="72" y="219" fill="#8fa597" font-size="13" text-anchor="end">الركبتين</text>
+  <text x="160" y="182" fill="#8fa597" font-size="12" text-anchor="middle">انت هنا</text>
+</svg>
+
+    <figcaption>حط الموبايل <b>قدام جبهتك على طول</b>، و<b>الكاميرا ناحيتك</b>. لما تسجد، راسك بتغطي الكاميرا.</figcaption>
+  </figure>
+
+  <button class="prayer test" id="test"><b>جرّب الأول</b><span>اسجد مرتين واتأكد</span></button>
+
   <div id="list" style="display:flex;flex-direction:column;gap:12px"></div>
 
   <div class="custom">
@@ -123,6 +163,11 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
     <button class="step" id="cPlus" aria-label="أكتر">+</button>
     <button class="go" id="cGo">ابدأ</button>
   </div>
+
+  <label class="row" for="flip">
+    <span class="label">اقلب الرقم (عشان تقراه وانت واقف والكاميرا ناحيتك)</span>
+    <input type="checkbox" id="flip">
+  </label>
 
   <div class="row">
     <span class="label">حساسية الكاميرا</span>
@@ -140,11 +185,12 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
 
   <h2>مكان الموبايل</h2>
   <ul>
-    <li>حط الموبايل على الأرض قدام مكان جبهتك مباشرة، والشاشة لفوق.</li>
-    <li>خلي الكاميرا الأمامية ناحيتك، تحت وشّك وانت ساجد.</li>
-    <li>لما تسجد، وشّك بيغطي الكاميرا والصورة بتضلم، فالتطبيق بيحسبها سجدة. كل سجدتين بيبقوا ركعة.</li>
-    <li>قبل أول صلاة جرّب سجدة واحدة، واتأكد إن الشريط الصغير اتلوّن أخضر والدايرة اتملت.</li>
-    <li>لو العدّاد مش بيحس بيك، ارفع الحساسية. ولو بيعدّ لوحده، قلّلها.</li>
+    <li>حط الموبايل على السجادة في اتجاه القبلة، <b>قدام مكان جبهتك على طول</b>، والشاشة لفوق.</li>
+    <li>خلي <b>طرف الكاميرا</b> (الطرف اللي فيه السماعة) هو الأقرب لجبهتك، والمسافة بينهم حوالي صباع أو اتنين.</li>
+    <li>لما تسجد، راسك بتبقى فوق الكاميرا على طول والصورة بتضلم، فبتتحسب سجدة. كل سجدتين = ركعة.</li>
+    <li>عشان الكاميرا ناحيتك، الرقم هيبان مقلوب. التطبيق بيقلبه لوحده عشان تقراه عدل وانت واقف.</li>
+    <li>استخدم زرار <b>جرّب الأول</b>. لو الشاشة نوّرت لحظة والدايرة اتملت، يبقى المكان مظبوط.</li>
+    <li>لو مش بيحس بيك، قرّب الموبايل من جبهتك أو ارفع الحساسية. ولو بيعدّ لوحده، قلّلها.</li>
     <li>لو حصل غلط في العدّ، صلّحه بزرار + و − تحت.</li>
   </ul>
 
@@ -198,9 +244,9 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
   const $ = id => document.getElementById(id);
   const PRAYERS = [["الفجر",2],["الظهر",4],["العصر",4],["المغرب",3],["العشاء",4]];
   // how dark (relative to the room's normal light) counts as "head over the phone"
-  const SENS = { low: 0.30, mid: 0.45, high: 0.60 };
-  const HOLD_MS = 600;      // must stay dark this long to count (a passing hand won't)
-  const COOLDOWN_MS = 1200; // minimum gap between two counted sajdas
+  const SENS = { low: 0.25, mid: 0.40, high: 0.55 };
+  const HOLD_MS = 350;      // must stay dark this long to count (a passing hand won't)
+  const COOLDOWN_MS = 1500; // minimum gap between two counted sajdas
 
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch { return d; } },
@@ -209,6 +255,10 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
 
   let sens = store.get("sens", "mid");
   if (!SENS[sens]) sens = "mid";
+  let flip = store.get("flip", "1") === "1";
+  const flipBox = $("flip");
+  flipBox.checked = flip;
+  flipBox.onchange = () => { flip = flipBox.checked; store.set("flip", flip ? "1" : "0"); };
 
   // ---------- home ----------
   const list = $("list");
@@ -224,6 +274,7 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
   $("cMinus").onclick = () => { custom = Math.max(1, custom - 1); showCustom(); };
   $("cPlus").onclick = () => { custom = Math.min(20, custom + 1); showCustom(); };
   $("cGo").onclick = () => startPrayer(`صلاة (${custom} ركعات)`, custom);
+  $("test").onclick = () => startPrayer("تجربة: اسجد مرتين", 2);
 
   const sensBtns = [...document.querySelectorAll("#sens button")];
   const showSens = () => sensBtns.forEach(b => b.setAttribute("aria-pressed", b.dataset.v === sens));
@@ -281,7 +332,7 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
   // ---------- camera darkness detector ----------
   const video = $("cam"), cv = $("cv"), ctx = cv.getContext("2d", { willReadFrequently: true });
   let stream = null, timer = null;
-  let baseline = null, near = false, nearSince = 0, counted = false, lastCount = 0, warm = 0;
+  let baseline = null, near = false, nearSince = 0, nearMin = 255, counted = false, lastCount = 0, warm = 0;
 
   function luminance() {
     ctx.drawImage(video, 0, 0, cv.width, cv.height);
@@ -300,16 +351,24 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
 
     const k = SENS[sens];
     const base = Math.max(baseline, 18);
-    const enterTh = base * k, exitTh = base * Math.min(k + 0.15, 0.9);
+    const enterTh = base * k;
+    // Leaving sujood: light comes back well above the darkest point. Sitting between the
+    // two sajdas still shades the phone, so don't demand the full room light again.
+    const exitTh = Math.max(enterTh * 1.15, Math.min(base * 0.7, nearMin * 2.5));
 
-    if (!near && lum < enterTh) { near = true; nearSince = now; counted = false; }
-    else if (near && lum > exitTh) { near = false; }
+    if (!near && lum < enterTh) { near = true; nearSince = now; nearMin = lum; counted = false; }
+    else if (near) {
+      nearMin = Math.min(nearMin, lum);
+      if (lum > exitTh) near = false;
+    }
 
     if (near && !counted && now - nearSince >= HOLD_MS && now - lastCount >= COOLDOWN_MS && !finished()) {
       counted = true; lastCount = now; addSajda(1);
+      $("pray").classList.add("flash"); setTimeout(() => $("pray").classList.remove("flash"), 300);
     }
-    // learn the room's normal light only while nobody is over the phone
-    if (!near) baseline = baseline * 0.97 + Math.max(lum, baseline * 0.6) * 0.03;
+    // learn the room's normal light only while nobody is over the phone:
+    // follow brightening quickly, darkening slowly (so ruku' shade doesn't drag it down)
+    if (!near) baseline = lum > baseline ? baseline * 0.7 + lum * 0.3 : baseline * 0.99 + lum * 0.01;
 
     const pct = v => Math.max(0, Math.min(100, v / (base * 1.2) * 100));
     const bar = $("mBar");
@@ -348,6 +407,7 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
   function startPrayer(name, n) {
     target = n; sujood = 0;
     $("pName").textContent = name;
+    $("pray").classList.toggle("flipped", flip);
     $("home").hidden = true; $("pray").hidden = false;
     render();
     keepAwake();

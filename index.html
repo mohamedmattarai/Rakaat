@@ -56,6 +56,13 @@ h1 { font-size: 1.6rem; font-weight: 800; margin: 0; }
   width: 100%; padding: 16px 20px; border-radius: 14px;
   background: var(--panel); border: 1px solid var(--line); text-align: right;
 }
+#today { color: var(--muted); font-size: .95rem; margin-top: 4px; }
+.prow { display: flex; gap: 8px; align-items: stretch; }
+.prow .prayer { flex: 1; min-width: 0; }
+.mark { width: 60px; flex: none; border-radius: 14px; border: 1px solid var(--line); background: transparent; font-size: 1.5rem; color: var(--line); }
+.prow.done .mark { background: var(--accent-deep); border-color: var(--accent-deep); color: var(--fg); }
+.prow.done .prayer { border-color: var(--accent-deep); }
+.prow.done .prayer span { color: var(--accent); }
 .prayer:active { background: var(--line); }
 .prayer b { font-size: 1.5rem; font-weight: 800; }
 .prayer span { color: var(--muted); font-size: 1rem; font-variant-numeric: tabular-nums; }
@@ -208,6 +215,7 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
 
   <button class="prayer test" id="test"><b>جرّب الأول</b><span>اسجد مرتين واتأكد</span></button>
 
+  <div id="today"></div>
   <div id="list" style="display:flex;flex-direction:column;gap:12px"></div>
 
   <div class="custom">
@@ -310,9 +318,8 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
     set(k, v) { try { localStorage.setItem(k, v); } catch {} }
   };
 
-  const old = { low: 4, mid: 7, high: 9 };
-  let sens = parseInt(store.get("sensV", old[store.get("sens", "mid")] || 7), 10);
-  if (!(sens >= 1 && sens <= 10)) sens = 7;
+  let sens = parseInt(store.get("sensV", "2"), 10);
+  if (!(sens >= 1 && sens <= 10)) sens = 2;
   let flip = store.get("flip2", "0") === "1";
   const flipBox = $("flip");
   flipBox.checked = flip;
@@ -320,13 +327,44 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
 
   // ---------- home ----------
   const list = $("list");
-  PRAYERS.forEach(([name, n]) => {
-    const b = document.createElement("button");
-    b.className = "prayer";
-    b.innerHTML = `<b>${name}</b><span>${n} ركعات</span>`;
-    b.onclick = () => startPrayer(name, n);
-    list.appendChild(b);
-  });
+  // ---------- today's prayers (✓ marks reset every new day) ----------
+  const todayKey = () => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
+  function loadDone() {
+    try { const o = JSON.parse(store.get("done", "{}")); return o.day === todayKey() && Array.isArray(o.list) ? o.list : []; }
+    catch { return []; }
+  }
+  function saveDone(l) { store.set("done", JSON.stringify({ day: todayKey(), list: l })); }
+  function setDone(name, on) {
+    const l = loadDone().filter(x => x !== name);
+    if (on) l.push(name);
+    saveDone(l);
+    renderList();
+  }
+  function renderList() {
+    const done = loadDone();
+    list.innerHTML = "";
+    PRAYERS.forEach(([name, n]) => {
+      const isDone = done.includes(name);
+      const row = document.createElement("div");
+      row.className = "prow" + (isDone ? " done" : "");
+      const b = document.createElement("button");
+      b.className = "prayer";
+      b.innerHTML = `<b>${name}</b><span>${isDone ? "صلّيتها ✓" : n + " ركعات"}</span>`;
+      b.onclick = () => startPrayer(name, n, false, name);
+      const m = document.createElement("button");
+      m.className = "mark";
+      m.textContent = "✓";
+      m.setAttribute("aria-pressed", isDone);
+      m.setAttribute("aria-label", isDone ? `شيل علامة ${name}` : `علّم إنك صلّيت ${name}`);
+      m.onclick = () => setDone(name, !isDone);
+      row.append(b, m);
+      list.appendChild(row);
+    });
+    const c = PRAYERS.filter(([n]) => done.includes(n)).length;
+    $("today").textContent = c === 5 ? "صلّيت الخمس صلوات النهارده، تقبّل الله" : `النهارده: صلّيت ${c} من 5`;
+  }
+  renderList();
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") renderList(); });
   let custom = 2;
   const showCustom = () => { $("cVal").textContent = custom; };
   $("cMinus").onclick = () => { custom = Math.max(1, custom - 1); showCustom(); };
@@ -374,9 +412,11 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
     $("minus").disabled = sujood === 0;
   }
 
+  let currentPrayer = null; // one of the five, so it can be marked ✓ when finished
   function addSajda(d) {
     sujood = Math.max(0, Math.min(target * 2, sujood + d));
     render();
+    if (currentPrayer && finished()) setDone(currentPrayer, true);
   }
   $("plus").onclick = () => addSajda(1);
   $("minus").onclick = () => addSajda(-1);
@@ -516,8 +556,8 @@ video { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: no
   }
 
   // ---------- flow ----------
-  function startPrayer(name, n, test = false) {
-    target = n; sujood = 0;
+  function startPrayer(name, n, test = false, prayerName = null) {
+    target = n; sujood = 0; currentPrayer = prayerName;
     $("sensPrayBox").hidden = !test;
     $("pName").textContent = name;
     $("pray").classList.toggle("flipped", flip);
